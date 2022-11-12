@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Container, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableContainer } from '@mui/material'
+import { Box, Chip, Button, Container, Typography, Table, TableBody, TableCell, TableHead, TableRow, TableContainer } from '@mui/material'
 import Papa from 'papaparse'
 import { read, utils } from 'xlsx'
 
@@ -86,33 +86,38 @@ export default function Loader(props) {
     <Container sx={{ mt: 2 }}>
       <Typography variant="h6">Pacific Academy</Typography>
       <Typography variant="h4">Governor General's Award calculation</Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        This calculates overall average percentage for students, based on final marks in PCR.
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        The data downloaded from PCR should contain at least the following columns:
-        <ul>
-          <li>Student Id</li>
-          <li>Student Nickname</li>
-          <li>Student Last Name</li>
-          <li>Final Mark</li>
-        </ul>
-        The file should be one of the following types:
-        <ul>
-          <li>.csv</li>
-          <li>.xls</li>
-          <li>.xlsx</li>
-        </ul>
-      </Typography>
-      <Button variant="contained" component="label" sx={{ my: 3 }}>
-        Upload File
-        <input 
-          hidden 
-          accept="application/csv,text/csv,application/vnd.ms-excel,application/xls,application/x-xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msexcel,application/x-msexcel,application/x-ms-excel,application/x-excel"
-          type="file"
-          onChange={handleFileUpload}
-          />
-      </Button>
+      <Box sx={{ displayPrint: "none" }}>
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          This calculates overall average percentage for students, based on final marks in PCR.
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          The data downloaded from PCR should contain at least the following columns:
+          <Chip sx={{ mx: 1 }} size="small" label="Student Id"/>
+          <Chip sx={{ mx: 1 }} size="small" label="Student Nickname"/>
+          <Chip sx={{ mx: 1 }} size="small" label="Student Last Name"/>
+          <Chip sx={{ mx: 1 }} size="small" label="Final Mark"/>
+        </Typography>
+        <Typography variant="body1">
+          The file should be one of the following types:
+          <Chip sx={{ mx: 1 }} size="small" label=".csv"/>
+          <Chip sx={{ mx: 1 }} size="small" label=".xls"/>
+          <Chip sx={{ mx: 1 }} size="small" label=".xlsx"/>
+        </Typography>
+        <Button variant="contained" component="label" sx={{ my: 3 }}>
+          Upload File
+          <input 
+            hidden 
+            accept="application/csv,text/csv,application/vnd.ms-excel,application/xls,application/x-xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msexcel,application/x-msexcel,application/x-ms-excel,application/x-excel"
+            type="file"
+            onChange={handleFileUpload}
+            />
+        </Button>
+        { summaryData.length > 0 &&
+          <Button variant="contained" color="secondary" sx={{ mx: 2 }} onClick={() => { window.print(); return false }}>
+            Print Results
+          </Button>
+        }
+      </Box>
       { summaryData.length > 0 &&
         <TableContainer>
           <Table size="small">
@@ -140,6 +145,5 @@ export default function Loader(props) {
         </TableContainer>
       }
     </Container>
-    
   )
 }
